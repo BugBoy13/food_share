@@ -1,52 +1,81 @@
 import React, { useState } from 'react';
-import { Text, StyleSheet, View, TextInput, Image, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, View, TextInput, Image, TouchableOpacity, ToastAndroid } from 'react-native';
+
 import LinearGradient from 'react-native-linear-gradient';
+import auth from '@react-native-firebase/auth';
+
 import { FONTS, icons } from '../../../constants';
 import OnBoardingHeading from './OnBoardingHeading';
 import OnBoardingSubHeading from './OnBoardingSubHeading';
+import VerifyOTPScreen from './VerifyOTPScreen';
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
 
     const [phone, setPhone] = useState('');
+    const [confirm, setConfirm] = useState(null);
 
-    return (
-        <View
-            style={styles.safeArea}>
-            <OnBoardingHeading
-                headerText="What's your number?" />
-            <OnBoardingSubHeading
-                headerText="Enter your number below for verification." />
-            <View
-                style={styles.phoneView}>
-                <Text
-                    style={styles.phoneCode}>
-                    +91
-                </Text>
-                <TextInput
-                    style={styles.inputPhone}
-                    autoCompleteType="tel"
-                    onChangeText={setPhone}
-                    maxLength={10}
-                    keyboardType="phone-pad"
-                    placeholder="Phone"
-                />
-            </View>
-            <View
-                style={styles.nextViewStyle}>
-                <LinearGradient
-                    colors={['#FF655B', '#FF5864']}
-                    style={styles.nextButtonStyle} >
-                    <TouchableOpacity
-                        onPress={() => console.log(phone)} >
-                        <Image
-                            style={styles.imageStyle}
-                            source={icons.forward_arrow_white} />
-                    </TouchableOpacity>
+    const showToast = (toastMessage) => {
+        ToastAndroid.show(toastMessage, ToastAndroid.SHORT);
+    }
 
-                </LinearGradient>
+    async function signInWithPhoneNumber(phone) {
+
+        if (phone.length < 10) {
+            showToast('Check phone number');
+            return;
+        }
+
+        try {
+            const confirmation = await auth().signInWithPhoneNumber(`+91${phone}`);
+            setConfirm(confirmation);
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+
+    if (!confirm) {
+        return (
+            <View
+                style={styles.safeArea}>
+                <OnBoardingHeading
+                    headerText="What's your number?" />
+                <OnBoardingSubHeading
+                    headerText="Enter your number below for verification." />
+                <View
+                    style={styles.phoneView}>
+                    <Text
+                        style={styles.phoneCode}>
+                        +91
+                    </Text>
+                    <TextInput
+                        style={styles.inputPhone}
+                        autoCompleteType="tel"
+                        onChangeText={setPhone}
+                        maxLength={10}
+                        keyboardType="phone-pad"
+                        placeholder="Phone"
+                    />
+                </View>
+                <View
+                    style={styles.nextViewStyle}>
+                    <LinearGradient
+                        colors={['#FF655B', '#FF5864']}
+                        style={styles.nextButtonStyle} >
+                        <TouchableOpacity
+                            onPress={() => signInWithPhoneNumber(phone)} >
+                            <Image
+                                style={styles.imageStyle}
+                                source={icons.forward_arrow_white} />
+                        </TouchableOpacity>
+
+                    </LinearGradient>
+                </View>
             </View>
-        </View>
-    )
+        )
+    } else {
+        return < VerifyOTPScreen />
+    }
 }
 
 const styles = StyleSheet.create({
