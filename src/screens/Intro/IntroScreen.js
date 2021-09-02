@@ -3,7 +3,7 @@ import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Onboarding from 'react-native-onboarding-swiper';
 import { images, strings } from '../../../constants'
-import LoginScreen from '../Onboarding/LoginScreen';
+import AuthCheckScreen from '../Onboarding/AuthCheckScreen';
 
 const Dots = ({ selected }) => {
     let backgroundColor;
@@ -105,7 +105,7 @@ const IntroScreen = ({ navigation }) => {
         )
     }
     else {
-        return <LoginScreen />
+        return <AuthCheckScreen />
     }
 }
 

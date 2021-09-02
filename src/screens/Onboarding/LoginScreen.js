@@ -37,7 +37,7 @@ const LoginScreen = () => {
                     colors={['#FF655B', '#FF5864']}
                     style={styles.nextButtonStyle} >
                     <TouchableOpacity
-                        onPress={() => console.log(Application.applicationId)} >
+                        onPress={() => console.log(phone)} >
                         <Image
                             style={styles.imageStyle}
                             source={icons.forward_arrow_white} />
@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     phoneCode: {
         fontSize: 16,
         fontWeight: 'bold',
+        paddingBottom: 3,
         ...FONTS.h3,
     },
     phoneView: {

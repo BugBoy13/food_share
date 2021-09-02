@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "658727448001",
+    "project_id": "food-react-bcaba",
+    "storage_bucket": "food-react-bcaba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658727448001:android:147970b196489c7daa1340",
+        "android_client_info": {
+          "package_name": "com.food_share"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "658727448001-6276t2hem2e19t9omfm4qpdqvhii5cep.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrNeYDLfELyHthT4415XTmlIjfZBzr-Bk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "658727448001-6276t2hem2e19t9omfm4qpdqvhii5cep.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
