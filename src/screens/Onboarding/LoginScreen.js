@@ -7,7 +7,6 @@ import auth from '@react-native-firebase/auth';
 import { FONTS, icons } from '../../../constants';
 import OnBoardingHeading from './OnBoardingHeading';
 import OnBoardingSubHeading from './OnBoardingSubHeading';
-import VerifyOTPScreen from './VerifyOTPScreen';
 
 const LoginScreen = ({ navigation }) => {
 
