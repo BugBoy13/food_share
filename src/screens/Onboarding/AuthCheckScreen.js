@@ -3,7 +3,7 @@ import auth from '@react-native-firebase/auth';
 import LoginScreen from './LoginScreen';
 import CheckUserType from './CheckUserType';
 
-const AuthCheckScreen = () => {
+const AuthCheckScreen = ({ navigation }) => {
 
     const [initializing, setInitializing] = useState(true);
     const [user, setUser] = useState();
@@ -19,8 +19,18 @@ const AuthCheckScreen = () => {
     }, []);
 
     if (initializing) return null;
-    if (!user) return < LoginScreen />
-    else return <CheckUserType />
+    if (!user) {
+        return (
+            < LoginScreen
+                navigation={navigation} />
+        )
+    }
+    else {
+        return (
+            <CheckUserType
+                navigation={navigation} />
+        )
+    }
 
 }
 

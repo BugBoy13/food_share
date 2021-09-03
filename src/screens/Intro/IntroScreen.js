@@ -105,7 +105,10 @@ const IntroScreen = ({ navigation }) => {
         )
     }
     else {
-        return <AuthCheckScreen />
+        return (
+            <AuthCheckScreen
+                navigation={navigation} />
+        )
     }
 }
 

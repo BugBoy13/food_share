@@ -12,7 +12,6 @@ import VerifyOTPScreen from './VerifyOTPScreen';
 const LoginScreen = ({ navigation }) => {
 
     const [phone, setPhone] = useState('');
-    const [confirm, setConfirm] = useState(null);
 
     const showToast = (toastMessage) => {
         ToastAndroid.show(toastMessage, ToastAndroid.SHORT);
@@ -27,55 +26,55 @@ const LoginScreen = ({ navigation }) => {
 
         try {
             const confirmation = await auth().signInWithPhoneNumber(`+91${phone}`);
-            setConfirm(confirmation);
+            if (confirmation) {
+                navigation.navigate('VerifyOTP');
+            }
         }
         catch (e) {
             console.log(e);
         }
     }
 
-    if (!confirm) {
-        return (
-            <View
-                style={styles.safeArea}>
-                <OnBoardingHeading
-                    headerText="What's your number?" />
-                <OnBoardingSubHeading
-                    headerText="Enter your number below for verification." />
-                <View
-                    style={styles.phoneView}>
-                    <Text
-                        style={styles.phoneCode}>
-                        +91
-                    </Text>
-                    <TextInput
-                        style={styles.inputPhone}
-                        autoCompleteType="tel"
-                        onChangeText={setPhone}
-                        maxLength={10}
-                        keyboardType="phone-pad"
-                        placeholder="Phone"
-                    />
-                </View>
-                <View
-                    style={styles.nextViewStyle}>
-                    <LinearGradient
-                        colors={['#FF655B', '#FF5864']}
-                        style={styles.nextButtonStyle} >
-                        <TouchableOpacity
-                            onPress={() => signInWithPhoneNumber(phone)} >
-                            <Image
-                                style={styles.imageStyle}
-                                source={icons.forward_arrow_white} />
-                        </TouchableOpacity>
 
-                    </LinearGradient>
-                </View>
+    return (
+        <View
+            style={styles.safeArea}>
+            <OnBoardingHeading
+                headerText="What's your number?" />
+            <OnBoardingSubHeading
+                headerText="Enter your number below for verification." />
+            <View
+                style={styles.phoneView}>
+                <Text
+                    style={styles.phoneCode}>
+                    +91
+                </Text>
+                <TextInput
+                    style={styles.inputPhone}
+                    autoCompleteType="tel"
+                    onChangeText={setPhone}
+                    maxLength={10}
+                    keyboardType="phone-pad"
+                    placeholder="Phone"
+                />
             </View>
-        )
-    } else {
-        return < VerifyOTPScreen />
-    }
+            <View
+                style={styles.nextViewStyle}>
+                <LinearGradient
+                    colors={['#FF655B', '#FF5864']}
+                    style={styles.nextButtonStyle} >
+                    <TouchableOpacity
+                        onPress={() => signInWithPhoneNumber(phone)} >
+                        <Image
+                            style={styles.imageStyle}
+                            source={icons.forward_arrow_white} />
+                    </TouchableOpacity>
+
+                </LinearGradient>
+            </View>
+        </View>
+    )
+
 }
 
 const styles = StyleSheet.create({
