@@ -10,16 +10,13 @@ import OnBoardingSubHeading from './OnBoardingSubHeading';
 
 const LoginScreen = ({ navigation }) => {
 
-    const [phone, setPhone] = useState('');
+    const [phone, setPhone] = useState('9818930789');
 
     const showToast = (toastMessage) => {
         ToastAndroid.show(toastMessage, ToastAndroid.SHORT);
     }
 
     async function signInWithPhoneNumber(phone) {
-
-        navigation.navigate('VerifyOTP');
-        return;
 
         if (phone.length < 10) {
             showToast('Check phone number');
@@ -29,7 +26,7 @@ const LoginScreen = ({ navigation }) => {
         try {
             const confirmation = await auth().signInWithPhoneNumber(`+91${phone}`);
             if (confirmation) {
-                navigation.navigate('VerifyOTP');
+                navigation.navigate('VerifyOTP', { confirmation });
             }
         }
         catch (e) {

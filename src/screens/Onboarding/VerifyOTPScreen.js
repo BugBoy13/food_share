@@ -1,15 +1,72 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, StyleSheet, View, TextInput, Image, TouchableOpacity, ToastAndroid } from 'react-native';
-import { FONTS, icons } from '../../../constants';
+import { COLORS, FONTS, icons } from '../../../constants';
 
 import LinearGradient from 'react-native-linear-gradient';
+import auth from '@react-native-firebase/auth';
 
 import OnBoardingHeading from './OnBoardingHeading';
 import OnBoardingSubHeading from './OnBoardingSubHeading';
 
-const VerifyOTPScreen = ({ navigation }) => {
+const VerifyOTPScreen = ({ route, navigation }) => {
 
-    const [otp, setOtp] = useState(null);
+    const { confirmation } = route.params;
+
+    const [otp, setOtp] = useState('');
+    const [counterTime, setCounterTime] = useState('00:30');
+    const [counter, setCounter] = useState(30);
+    const [retryMessage, setRetryMessage] = useState('');
+    const [verifyMessage, setVerifyMessage] = useState('');
+
+    function onAuthStateChanged(user) {
+        navigation.navigate('CheckUserType')
+    }
+
+    useEffect(() => {
+        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+        return subscriber;
+    }, []);
+
+    useEffect(() => {
+        const timer = counter > 0 && setInterval(() => {
+            if (counter - 1 < 10) {
+                setCounterTime(`00:0${counter - 1}`)
+            }
+            else {
+                setCounterTime(`00:${counter - 1}`)
+            }
+
+            if (counter - 1 === 0) {
+                setRetryMessage('Didn\'t receive OTP? Retry')
+            }
+
+            setCounter(counter - 1)
+        }, 1000);
+        return () => clearInterval(timer);
+    }, [counter])
+
+    async function verifyPhoneNumber(otp) {
+        try {
+            if (otp.length < 6) {
+                ToastAndroid.show('Invalid code', ToastAndroid.SHORT);
+                return;
+            }
+
+            console.log(confirmation, otp);
+
+            await confirmation.confirm(otp);
+
+            setVerifyMessage('Verified!')
+
+        } catch (error) {
+            console.log(error);
+            if (error.code == 'auth/invalid-verification-code') {
+                ToastAndroid.show('Invalid code', ToastAndroid.SHORT);
+            } else {
+                ToastAndroid.show('Account linking error', ToastAndroid.SHORT);
+            }
+        }
+    }
 
     return (
         <View
@@ -19,19 +76,34 @@ const VerifyOTPScreen = ({ navigation }) => {
             <OnBoardingSubHeading
                 headerText="You will get an OTP via SMS" />
             <View
-                style={styles.otpView}>
-                <Text
-                    style={styles.otpCode}>
-                    OTP:
-                </Text>
-                <TextInput
-                    style={styles.inputOtp}
-                    autoCompleteType="tel"
-                    onChangeText={setOtp}
-                    maxLength={10}
-                    keyboardType="phone-pad"
-                    placeholder="******"
-                />
+                style={styles.otpParentStyle} >
+                <View
+                    style={styles.otpView}>
+                    <Text
+                        style={styles.otpCode}>
+                        OTP:
+                    </Text>
+                    <TextInput
+                        style={styles.inputOtp}
+                        autoCompleteType="tel"
+                        onChangeText={setOtp}
+                        maxLength={6}
+                        keyboardType="number-pad"
+                        placeholder="******"
+                    />
+                    <Text
+                        style={styles.timerStyle} >
+                        {counterTime}
+                    </Text>
+                </View>
+                <TouchableOpacity
+                    onPress={() => navigation.goBack()} >
+                    <Text
+                        style={styles.resendButtonStyle} >
+                        {retryMessage}
+                    </Text>
+                </TouchableOpacity>
+
             </View>
             <View
                 style={styles.nextViewStyle}>
@@ -45,17 +117,24 @@ const VerifyOTPScreen = ({ navigation }) => {
                             source={icons.back_arrow_black} />
                     </TouchableOpacity>
                 </LinearGradient>
-                <LinearGradient
-                    colors={['#FF655B', '#FF5864']}
-                    style={styles.nextButtonStyle} >
-                    <TouchableOpacity
-                        onPress={() => console.log()} >
-                        <Image
-                            style={styles.imageStyle}
-                            source={icons.forward_arrow_white} />
-                    </TouchableOpacity>
 
-                </LinearGradient>
+                <View
+                    style={styles.verifyStyle} >
+                    <Text
+                        style={styles.verifiedTextStyle} >
+                        {verifyMessage}
+                    </Text>
+                    <LinearGradient
+                        colors={['#FF655B', '#FF5864']}
+                        style={styles.nextButtonStyle} >
+                        <TouchableOpacity
+                            onPress={() => verifyPhoneNumber(otp)} >
+                            <Image
+                                style={styles.imageStyle}
+                                source={icons.forward_arrow_white} />
+                        </TouchableOpacity>
+                    </LinearGradient>
+                </View>
             </View>
         </View >
     )
@@ -71,25 +150,48 @@ const styles = StyleSheet.create({
         paddingBottom: 3,
         ...FONTS.h3,
     },
+    otpParentStyle: {
+        marginTop: 60,
+        marginLeft: 40
+    },
     otpView: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 60,
-        marginLeft: 40,
     },
     inputOtp: {
         fontSize: 16,
         borderBottomWidth: 1,
         width: 200,
+        marginLeft: 10,
+    },
+    timerStyle: {
+        color: COLORS.blue,
+        fontSize: 12,
         marginLeft: 10
+    },
+    resendButtonStyle: {
+        marginTop: 40,
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: COLORS.secondary
+    },
+    verifiedTextStyle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: COLORS.green,
+        marginRight: 10,
+        height: 30
+    },
+    verifyStyle: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        marginRight: 40
     },
     nextButtonStyle: {
         height: 50,
         width: 50,
         borderRadius: 30,
         elevation: 10,
-        marginTop: 100,
-        marginRight: 40,
         alignItems: 'center'
     },
     previousButtonStyle: {
@@ -97,7 +199,6 @@ const styles = StyleSheet.create({
         width: 50,
         borderRadius: 50,
         elevation: 10,
-        marginTop: 100,
         marginLeft: 40,
         alignItems: 'center'
     },
@@ -108,10 +209,10 @@ const styles = StyleSheet.create({
         margin: 15,
     },
     nextViewStyle: {
-        flex: 1,
         flexDirection: 'row',
         alignContent: 'space-around',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginTop: 60
     }
 })
 
