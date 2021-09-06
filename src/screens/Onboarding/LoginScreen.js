@@ -10,7 +10,7 @@ import OnBoardingSubHeading from './OnBoardingSubHeading';
 
 const LoginScreen = ({ navigation }) => {
 
-    const [phone, setPhone] = useState('9818930789');
+    const [phone, setPhone] = useState('');
 
     const showToast = (toastMessage) => {
         ToastAndroid.show(toastMessage, ToastAndroid.SHORT);
