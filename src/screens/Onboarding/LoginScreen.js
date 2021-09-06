@@ -18,6 +18,9 @@ const LoginScreen = ({ navigation }) => {
 
     async function signInWithPhoneNumber(phone) {
 
+        navigation.navigate('VerifyOTP');
+        return;
+
         if (phone.length < 10) {
             showToast('Check phone number');
             return;
