@@ -1,22 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import auth from '@react-native-firebase/auth';
+import React from 'react';
 import LoginScreen from './LoginScreen';
 import CheckUserType from './CheckUserType';
+import useAuth from '../../hooks/useAuth';
 
 const AuthCheckScreen = ({ navigation }) => {
 
-    const [initializing, setInitializing] = useState(true);
-    const [user, setUser] = useState();
-
-    function onAuthStateChanged(user) {
-        setUser(user);
-        if (initializing) setInitializing(false);
-    }
-
-    useEffect(() => {
-        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-        return subscriber; // unsubscribe on unmount
-    }, []);
+    const { user, initializing } = useAuth();
 
     if (initializing) return null;
     if (!user) {
