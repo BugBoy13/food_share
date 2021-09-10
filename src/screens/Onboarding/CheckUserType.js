@@ -3,6 +3,8 @@ import { View, Text, StyleSheet } from 'react-native';
 
 const CheckUserType = () => {
 
+    // save user token here
+
     return (
         <View
             style={styles.container}>

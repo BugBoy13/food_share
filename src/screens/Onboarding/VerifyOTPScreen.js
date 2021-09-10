@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Text, StyleSheet, View, TextInput, Image, TouchableOpacity, ToastAndroid } from 'react-native';
 import { COLORS, FONTS, icons } from '../../../constants';
 
@@ -8,9 +8,12 @@ import auth from '@react-native-firebase/auth';
 import OnBoardingHeading from './OnBoardingHeading';
 import OnBoardingSubHeading from './OnBoardingSubHeading';
 
+import { Context as UserContext } from '../../context/userContext';
+
 const VerifyOTPScreen = ({ route, navigation }) => {
 
     const { confirmation } = route.params;
+    const { saveUser } = useContext(UserContext);
 
     const [otp, setOtp] = useState('');
     const [counterTime, setCounterTime] = useState('00:30');
@@ -19,7 +22,10 @@ const VerifyOTPScreen = ({ route, navigation }) => {
     const [verifyMessage, setVerifyMessage] = useState('');
 
     function onAuthStateChanged(user) {
-        navigation.navigate('CheckUserType')
+        if (user) {
+            saveUser(user);
+            navigation.navigate('CheckUserType')
+        }
     }
 
     useEffect(() => {
