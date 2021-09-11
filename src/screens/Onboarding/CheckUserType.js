@@ -1,30 +1,30 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+import strings from '../../../constants/strings';
 import { Context as UserContext } from '../../context/userContext';
 import useUserType from '../../hooks/useUserType';
+import MyDonationsScreen from '../Provider/MyDonationsScreen';
+import FoodRequestScreen from '../Taker/FoodRequestScreen';
+import LastQuestionScreen from './LastQuestionScreen';
 
 const CheckUserType = () => {
 
-    // save user token here
-    /*
-    call API to check User Type
-        if data not present, go to question screen
-        if data present,
-            go to donor and receiver screens
-    */
+    // TODO: save user token here
 
     const { state } = useContext(UserContext);
     let user_id = state._user.uid;
 
     const userType = useUserType(user_id);
-    console.log(userType);
 
-    return (
-        <View
-            style={styles.container}>
-            <Text>CheckUserType</Text>
-        </View>
-    )
+    if (userType == null) {
+        return <LastQuestionScreen />
+    }
+    else if (userType == strings.PROVIDER) {
+        return <MyDonationsScreen />
+    }
+    else if (userType == strings.TAKER) {
+        return <FoodRequestScreen />
+    }
 }
 
 const styles = StyleSheet.create({

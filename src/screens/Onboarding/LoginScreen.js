@@ -5,8 +5,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
 
 import { FONTS, icons } from '../../../constants';
-import OnBoardingHeading from './OnBoardingHeading';
-import OnBoardingSubHeading from './OnBoardingSubHeading';
+import OnBoardingHeading from './components/OnBoardingHeading';
+import OnBoardingSubHeading from './components/OnBoardingSubHeading';
 
 const LoginScreen = ({ navigation }) => {
 

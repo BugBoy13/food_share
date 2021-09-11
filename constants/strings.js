@@ -6,6 +6,9 @@ export const slide1Text = 'Help us stop wasting of food'
 export const slide2Text = 'Donate food to feed the needy'
 export const slide3Text = 'Care enough to help food reach the children'
 
+export const PROVIDER = "PROVIDER"
+export const TAKER = "TAKER"
+
 export default {
     slide1Title,
     slide2Title,
@@ -13,5 +16,8 @@ export default {
 
     slide1Text,
     slide2Text,
-    slide3Text
+    slide3Text,
+
+    PROVIDER,
+    TAKER
 }

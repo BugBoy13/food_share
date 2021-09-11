@@ -5,8 +5,8 @@ import { COLORS, FONTS, icons } from '../../../constants';
 import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
 
-import OnBoardingHeading from './OnBoardingHeading';
-import OnBoardingSubHeading from './OnBoardingSubHeading';
+import OnBoardingHeading from './components/OnBoardingHeading';
+import OnBoardingSubHeading from './components/OnBoardingSubHeading';
 
 import { Context as UserContext } from '../../context/userContext';
 

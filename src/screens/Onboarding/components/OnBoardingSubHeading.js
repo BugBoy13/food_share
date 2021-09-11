@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { FONTS } from '../../../constants';
+import { FONTS } from '../../../../constants';
 
 const OnBoardingSubHeading = ({ headerText }) => {
 
