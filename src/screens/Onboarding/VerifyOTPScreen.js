@@ -24,7 +24,7 @@ const VerifyOTPScreen = ({ route, navigation }) => {
     function onAuthStateChanged(user) {
         if (user) {
             saveUser(user);
-            navigation.navigate('CheckUserType')
+            navigation.replace('CheckUserType')
         }
     }
 

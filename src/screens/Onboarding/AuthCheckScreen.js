@@ -1,14 +1,15 @@
 import React, { useContext } from 'react';
 import LoginScreen from './LoginScreen';
 import CheckUserType from './CheckUserType';
-import { Context as UserContext } from '../../context/userContext';
+import useAuth from '../../hooks/useAuth';
+
 
 const AuthCheckScreen = ({ navigation }) => {
 
-    const { state } = useContext(UserContext);
+    const { user, initializing } = useAuth();
 
     if (initializing) return null;
-    if (!state) {
+    if (!user) {
         return (
             < LoginScreen
                 navigation={navigation} />
