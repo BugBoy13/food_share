@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { RadioButton } from 'react-native-paper';
+import { useEffect } from 'react/cjs/react.development';
 import { COLORS, strings } from '../../../constants';
+import useLocation from '../../hooks/useLocation';
 import OnBoardingHeading from './components/OnBoardingHeading';
 
 const LastQuestionScreen = () => {
@@ -11,13 +13,17 @@ const LastQuestionScreen = () => {
     const [address, setAddress] = useState('');
     const [userType, setUserType] = useState('');
 
-    async function setLocation() {
-
-    }
+    const [{
+        currentLatitude,
+        currentLongitude,
+        locationStatus
+    }, setLocation] = useLocation();
 
     async function proceed() {
 
     }
+
+    console.log(currentLatitude, currentLongitude)
 
     return (
         <View
@@ -55,23 +61,28 @@ const LastQuestionScreen = () => {
                     <Text>I want to receive</Text>
                 </View>
             </View>
-            <TouchableOpacity
-                onPress={setLocation}>
-                <View
-                    style={styles.setLocation} >
-                    <Text
-                        style={styles.locationTextStyle} >
-                        Set Location
-                    </Text>
-                </View>
-            </TouchableOpacity>
-            <View
-                style={styles.successViewStyle} >
-                <Text
-                    style={styles.successTextStyle} >
-                    Location set successfully
-                </Text>
-            </View>
+            {
+                (currentLatitude && currentLongitude)
+                    ? <View
+                        style={styles.successViewStyle} >
+                        <Text
+                            style={styles.successTextStyle} >
+                            Location set successfully
+                        </Text>
+                    </View> :
+                    <TouchableOpacity
+                        onPress={setLocation}>
+                        <View
+                            style={styles.setLocation} >
+                            <Text
+                                style={styles.locationTextStyle} >
+                                Set Location
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+
+            }
+
             <TouchableOpacity
                 onPress={proceed}>
                 <View>
@@ -135,7 +146,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     successViewStyle: {
-        marginTop: 10,
+        marginTop: 20,
         alignItems: 'center'
     },
     successTextStyle: {
