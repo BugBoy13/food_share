@@ -14,7 +14,11 @@ const CheckUserType = ({ navigation }) => {
     const { state } = useContext(UserContext);
     let user_id = state._user.uid;
 
-    const userType = useUserType(user_id);
+    const { userType, isLoading } = useUserType(user_id);
+
+    if (isLoading) {
+        return null;
+    }
 
     if (userType == null) {
         return <LastQuestionScreen navigation={navigation} />

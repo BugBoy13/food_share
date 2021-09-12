@@ -4,6 +4,7 @@ import server from '../api/server'
 function useUserType(user_id) {
 
     const [userType, setUserType] = useState(null);
+    const [isLoading, setLoading] = useState(true);
 
     useEffect(async () => {
 
@@ -16,16 +17,19 @@ function useUserType(user_id) {
             if (response.status == 200) {
                 setUserType(response.data.user_type);
             }
+
+            setLoading(false);
         }
         catch (error) {
             console.error({ error });
 
             setUserType(null);
+            setLoading(false);
         }
 
     }, [])
 
-    return userType;
+    return { userType, isLoading };
 
 }
 
