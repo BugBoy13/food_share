@@ -1,29 +1,76 @@
-import React, { useCallback, useState } from 'react';
-import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, ToastAndroid } from 'react-native';
+
 import LinearGradient from 'react-native-linear-gradient';
 import { RadioButton } from 'react-native-paper';
-import { useEffect } from 'react/cjs/react.development';
+
 import { COLORS, strings } from '../../../constants';
 import useLocation from '../../hooks/useLocation';
 import OnBoardingHeading from './components/OnBoardingHeading';
+import { Context as UserContext } from '../../context/userContext';
+import server from '../../api/server';
 
-const LastQuestionScreen = () => {
+const LastQuestionScreen = ({ navigation }) => {
 
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
     const [userType, setUserType] = useState('');
 
+    const { state } = useContext(UserContext);
+    const user = state;
+
     const [{
         currentLatitude,
         currentLongitude,
-        locationStatus
     }, setLocation] = useLocation();
 
     async function proceed() {
 
-    }
+        if (name === '') {
+            ToastAndroid.show('Enter name', ToastAndroid.SHORT); return;
+        }
+        else if (address === '') {
+            ToastAndroid.show('Enter address', ToastAndroid.SHORT); return;
+        }
+        else if (userType === '') {
+            ToastAndroid.show('Select option', ToastAndroid.SHORT); return;
+        }
+        else if (!currentLatitude || !currentLongitude) {
+            ToastAndroid.show('Set Location', ToastAndroid.SHORT); return;
+        }
 
-    console.log(currentLatitude, currentLongitude)
+        let data = {
+            'phone': user._user.phoneNumber.slice(-10),
+            'name': name,
+            'address': address,
+            'userType': userType,
+            'location': {
+                'latitude': parseFloat(currentLatitude),
+                'longitude': parseFloat(currentLongitude)
+            },
+            'deviceToken': '',
+            'userID': user._user.uid
+        }
+
+        console.log(data);
+
+        try {
+            let response = await server.post('/addUser', data);
+
+            if (response.status == 200) {
+
+                if (userType === strings.PROVIDER) {
+                    navigation.replace('MyDonations');
+                }
+                else if (userType === strings.TAKER) {
+                    navigation.replace('FoodRequests');
+                }
+            }
+        }
+        catch (e) {
+            console.error({ e });
+        }
+    }
 
     return (
         <View

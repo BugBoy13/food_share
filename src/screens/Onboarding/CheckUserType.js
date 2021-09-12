@@ -7,7 +7,7 @@ import MyDonationsScreen from '../Provider/MyDonationsScreen';
 import FoodRequestScreen from '../Taker/FoodRequestScreen';
 import LastQuestionScreen from './LastQuestionScreen';
 
-const CheckUserType = () => {
+const CheckUserType = ({ navigation }) => {
 
     // TODO: save user token here
 
@@ -17,13 +17,13 @@ const CheckUserType = () => {
     const userType = useUserType(user_id);
 
     if (userType == null) {
-        return <LastQuestionScreen />
+        return <LastQuestionScreen navigation={navigation} />
     }
     else if (userType == strings.PROVIDER) {
-        return <MyDonationsScreen />
+        return <MyDonationsScreen navigation={navigation} />
     }
     else if (userType == strings.TAKER) {
-        return <FoodRequestScreen />
+        return <FoodRequestScreen navigation={navigation} />
     }
 }
 
