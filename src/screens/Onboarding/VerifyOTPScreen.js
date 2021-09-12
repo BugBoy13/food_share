@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, StyleSheet, View, TextInput, Image, TouchableOpacity, ToastAndroid } from 'react-native';
+import { Text, StyleSheet, View, TextInput, Image, TouchableOpacity, ToastAndroid, ActivityIndicator } from 'react-native';
 import { COLORS, FONTS, icons } from '../../../constants';
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -20,6 +20,7 @@ const VerifyOTPScreen = ({ route, navigation }) => {
     const [counter, setCounter] = useState(30);
     const [retryMessage, setRetryMessage] = useState('');
     const [verifyMessage, setVerifyMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     function onAuthStateChanged(user) {
         if (user) {
@@ -58,9 +59,9 @@ const VerifyOTPScreen = ({ route, navigation }) => {
                 return;
             }
 
-            console.log(confirmation, otp);
-
+            setIsLoading(true);
             await confirmation.confirm(otp);
+            setIsLoading(false);
 
             setVerifyMessage('Verified!')
 
@@ -72,6 +73,14 @@ const VerifyOTPScreen = ({ route, navigation }) => {
                 ToastAndroid.show('Account linking error', ToastAndroid.SHORT);
             }
         }
+    }
+
+    if (isLoading) {
+        return <ActivityIndicator style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+        }} size="large" color={COLORS.primary} />;
     }
 
     return (

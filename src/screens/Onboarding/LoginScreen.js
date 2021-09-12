@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { Text, StyleSheet, View, TextInput, Image, TouchableOpacity, ToastAndroid } from 'react-native';
+import { Text, StyleSheet, View, TextInput, Image, TouchableOpacity, ToastAndroid, ActivityIndicator } from 'react-native';
 
 import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
 
-import { FONTS, icons } from '../../../constants';
+import { COLORS, FONTS, icons } from '../../../constants';
 import OnBoardingHeading from './components/OnBoardingHeading';
 import OnBoardingSubHeading from './components/OnBoardingSubHeading';
 
 const LoginScreen = ({ navigation }) => {
 
     const [phone, setPhone] = useState('');
+    const [isLoading, setLoading] = useState(false);
 
     const showToast = (toastMessage) => {
         ToastAndroid.show(toastMessage, ToastAndroid.SHORT);
@@ -24,16 +25,26 @@ const LoginScreen = ({ navigation }) => {
         }
 
         try {
+            setLoading(true);
             const confirmation = await auth().signInWithPhoneNumber(`+91${phone}`);
             if (confirmation) {
                 navigation.replace('VerifyOTP', { confirmation });
             }
+            setLoading(false);
         }
         catch (e) {
+            setLoading(false);
             console.log(e);
         }
     }
 
+    if (isLoading) {
+        <ActivityIndicator style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+        }} size="large" color={COLORS.primary} />;
+    }
 
     return (
         <View

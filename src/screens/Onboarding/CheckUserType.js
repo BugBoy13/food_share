@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
+import { COLORS } from '../../../constants';
 import strings from '../../../constants/strings';
 import { Context as UserContext } from '../../context/userContext';
 import useUserType from '../../hooks/useUserType';
@@ -17,7 +18,11 @@ const CheckUserType = ({ navigation }) => {
     const { userType, isLoading } = useUserType(user_id);
 
     if (isLoading) {
-        return null;
+        return <ActivityIndicator style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+        }} size="large" color={COLORS.primary} />;;
     }
 
     if (userType == null) {
