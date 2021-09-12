@@ -7,7 +7,6 @@ const useLocation = () => {
 
     const [currentLongitude, setCurrentLongitude] = useState(null);
     const [currentLatitude, setCurrentLatitude] = useState(null);
-    const [locationStatus, setLocationStatus] = useState(false);
 
     const [click, setClick] = useState(true);
 
@@ -28,11 +27,7 @@ const useLocation = () => {
                 );
 
                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-
                     getOneTimeLocation();
-                    setLocationStatus(true);
-                } else {
-                    setLocationStatus(false);
                 }
             }
             catch (e) {
@@ -64,7 +59,7 @@ const useLocation = () => {
         );
     };
 
-    return [{ currentLatitude, currentLongitude, locationStatus }, handleClick]
+    return [{ currentLatitude, currentLongitude }, handleClick]
 }
 
 export default useLocation;
