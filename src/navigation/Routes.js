@@ -7,7 +7,8 @@ import {
     LoginScreen,
     VerifyOTPScreen,
     MyDonationsScreen,
-    FoodRequestScreen
+    FoodRequestScreen,
+    AddFoodDetailsScreen
 } from '../screens';
 
 const Stack = createNativeStackNavigator();
@@ -26,6 +27,7 @@ function Routes() {
                 <Stack.Screen name="CheckUserType" component={CheckUserType} />
                 <Stack.Screen name="MyDonations" component={MyDonationsScreen} />
                 <Stack.Screen name="FoodRequests" component={FoodRequestScreen} />
+                <Stack.Screen name="AddFood" component={AddFoodDetailsScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     )

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Provider } from './src/context/userContext';
+import { Provider as UserProvider } from './src/context/userContext';
+import { Provider as MyDonationsProvider } from './src/context/myDonationsContext';
 import Routes from './src/navigation/Routes';
 
 const App = () => {
@@ -10,9 +11,11 @@ const App = () => {
       style={{
         flex: 1
       }}>
-      <Provider>
-        <Routes />
-      </Provider>
+      <MyDonationsProvider>
+        <UserProvider>
+          <Routes />
+        </UserProvider>
+      </MyDonationsProvider>
     </View>
   )
 }
