@@ -103,7 +103,7 @@ const VerifyOTPScreen = ({ route, navigation }) => {
                     </Text>
                 </View>
                 <TouchableOpacity
-                    onPress={() => navigation.goBack()} >
+                    onPress={() => navigation.replace('Login')} >
                     <Text
                         style={styles.resendButtonStyle} >
                         {retryMessage}
